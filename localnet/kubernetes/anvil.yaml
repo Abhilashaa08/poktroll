@@ -13,7 +13,6 @@ spec:
       labels:
         app: anvil
     spec:
-      # TODO_IMPROVE: Add resource limits
       containers:
         - name: anvil
           image: ghcr.io/foundry-rs/foundry:nightly-3fa02706ca732c994715ba42d923605692062375
@@ -21,6 +20,15 @@ spec:
             - containerPort: 8547
           command: ["anvil"]
           args: ["-p", "8547", "-b", "5", "--host", "0.0.0.0"]
+
+          #  Added resource requests & limits (fix for TODO)
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
 ---
 apiVersion: v1
 kind: Service
@@ -34,3 +42,4 @@ spec:
       name: rpc
       port: 8547
       targetPort: 8547
+
